@@ -50,27 +50,27 @@ async def curva(angulo, kp, ki):
 
 
 async def start1():
-    #start berçario
+    #start M-01(levanta árvore),M-02(Tubarão),M-04(Coleta Mergulhador)
     await pausa (2)
-    await mover(55,400,0,0)
-    await motor.run_for_degrees(port.C,-330,100)
-    await motor.run_for_degrees(port.C,80,100)
-    await motor.run_for_degrees(port.E,-500,400)
-    await mover(9,-200,1,0)
+    await mover(55,400,0,0)#Vai até as missões
+    await motor.run_for_degrees(port.C,-330,100) #Cremalheira levanta arvore 
+    await motor.run_for_degrees(port.C,80,100) #Abaixa a cremalheira
+    await motor.run_for_degrees(port.E,-500,400) #Coleta mergulhador
+    await mover(9,-200,1,0) #se distancia das missoes para fazer curvga
     await pausa(200)
-    await curva (-340,0.7,0)
+    await curva (-340,0.7,0) #faz curva para coletar os krills,coral e amostra d´agua
     await pausa(100)
-    await mover (60,-1000,1,0)
+    await mover (60,-1000,1,0) #volta para a base 
 
 
 async def start2():
     #start mastro
-    await mover (35,400,0,0)
-    await curva(-120,0.7,0)
-    await mover(23,150,0,0)
-    await curva(-700,0.7,0)
-    await mover(12,100,0,0)
-    await mover(20,-200,0,0)
+    await mover (35,400,0,0) # vai ate o mastro 
+    await curva(-120,0.7,0) #curva para ir ate o mastro 
+    await mover(23,150,0,0) #caminho ate o mastro 
+    await curva(-700,0.7,0) #caminho ao mastro 
+    await mover(12,100,0,0) #Levanta o mastro e coleta báu 
+    await mover(20,-200,0,0) #se distancia do mastro para ir entregar mergulhador,M-03 e faz a coleta da amostra
 
 async def start3():
     #tridente
@@ -79,60 +79,60 @@ async def start3():
 
 async def start4():
     #travessia
-    await mover(46,500,0,0)
-    await motor.run_for_degrees(port.E,-400,800)
-    await mover(48,200,1,0)
-    await motor.run_for_degrees(port.E,400,600)
-    await mover(25,-1000,0,0)
-    await motor.run_for_degrees(port.E,-400,500)
-    await mover(30,1000,0,0)
+    await mover(46,500,0,0) #entrega as amostras (garrafa de agua, leito marinho, tridente e báu)
+    await motor.run_for_degrees(port.E,-400,800) #abaixa a garra que leva o navio 
+    await mover(48,200,1,0) # reta que leva o navio ate o porto 
+    await motor.run_for_degrees(port.E,400,600) #levanta a garra 
+    await mover(25,-1000,0,0) #da ré para a garra se direcionar a parte traseira do navio
+    await motor.run_for_degrees(port.E,-400,500) #abaixa a garra para levar o navio por trás
+    await mover(30,1000,0,0) # entrega o navio 
 
 
 
 async def start5():
     #barquinho
-    await mover(60,300,1,0)
-    await mover(18,-200,1,0)
-    await curva(-480,0.2,0.000001)
-    await mover(4,100,1,0)
-    await motor.run_for_degrees(port.E,700,400)
-    await curva(480,0.5, 0.00005)
-    await mover(18,600,1, 0)
-    await curva(-260,0.7, 0.00001)
-    await motor.run_for_degrees(port.E,400,600)
-    await mover(3,-1000,1,0)
-    await motor.run_for_degrees(port.C,200,200)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,80,-100,100)
-    await mover(60,-1100,0,0)
+    await mover(60,300,1,0) #reta que se direciona ate o barco e que tira o coral da frente da M-13
+    await mover(18,-200,1,0) # depois que tira o coral ele volta para a M-13 
+    await curva(-480,0.2,0.000001) #curva para o barco 
+    await mover(4,100,1,0) #viga bate no barco para a garra ir por baixo do barco 
+    await motor.run_for_degrees(port.E,700,400) #gira a garra 
+    await curva(480,0.5, 0.00005) #curva para fazer a coleta da amostra de plancton e dos krills 
+    await mover(18,600,1, 0) # reta para fazer as coletas 
+    await curva(-260,0.7, 0.00001) #curva para pegfar a amostra de plâncton 
+    await motor.run_for_degrees(port.E,400,600) #gira a garra para pegar a amostra 
+    await mover(3,-1000,1,0) 
+    await motor.run_for_degrees(port.C,200,200) #derruba a "caixa de coleta" 
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,80,-100,100) #coleta tudo com a "caixa de coleta"
+    await mover(60,-1100,0,0) #volta a base
 
 async def start6():
-    #sonar e polvo
-   await mover(70,600,0,0)
-   await curva(250,0.6,0)
-   await mover(30,600,0,0)
-   await mover(8,-400,0,0)
-   await motor.run_for_degrees(port.C,200,400)
-   await mover(50,-800,0,0)
-   await curva(400,0.7,0)
-   await mover(26,800,0,0)
-   await mover(40,-1000,0,0)
+    #sonar e polvo 
+   await mover(70,600,0,0) #vai ate o sonar 
+   await curva(250,0.6,0) #curva para o sonar 
+   await mover(30,600,0,0) # se alinha ao sonar 
+   await mover(8,-400,0,0) # se ajusta para realizar o sonar
+   await motor.run_for_degrees(port.C,200,400) #realiza o sonar 
+   await mover(50,-800,0,0) # vai ate o polvo  
+   await curva(400,0.7,0) #se ajusta para o polvo 
+   await mover(26,800,0,0) # pega o polvo  
+   await mover(40,-1000,0,0) #volta para à base
 
 
 async def start7():
     #baleia 
-    await mover(68.5,400,2,0)
-    await curva(-390,0.6,0.000001)
-    await mover (11,150,0,0)
-    await mover(9,-200,0,0)
-    await curva(-60,0.5,0.000005)
-    await mover(6,-200,1,0)
-    await curva(-530,0.5,0.000001)
-    await mover(37,-1000,1,0)
-    await curva(-400,0.5,0.000001)
-    await mover(13,-300,1,0)
-    await motor.run_for_degrees(port.C,700,400)
-    await pausa(5000)
-    await mover(5,300,0,0)
+    await mover(68.5,400,2,0) #vai a baleia 
+    await curva(-390,0.6,0.000001) #curva para ir a baleia
+    await mover (11,150,0,0) #Realiza a baleia
+    await mover(9,-200,0,0) #se afasta da baleia
+    await curva(-60,0.5,0.000005) #se ajusta para ir a compartilhada
+    await mover(6,-200,1,0)# se ajusta para a compartilhada
+    await curva(-530,0.5,0.000001) #se ajusta para a compartilhada
+    await mover(37,-1000,1,0) # vai ate a compartilhada
+    await curva(-400,0.5,0.000001) #curva de ajuste para se alinhar com a compartilhhada
+    await mover(13,-300,1,0) #chega na compartilhada
+    await motor.run_for_degrees(port.C,700,400) #cremalheira levanta para realizar a compartilhada
+    await pausa(5000) # espera o submarino descer 
+    await mover(5,300,0,0) #entrega o polvo e se afsta da compartilhada 
 
 
 
