@@ -1,5 +1,161 @@
-start 01
+from hub import light_matrix, port, motion_sensor, button
+import runloop, motor, motor_pair
 
-start 02
+motor_pair.pair(motor_pair.PAIR_1, port.D, port.A)
+# Definição dos pares de motores de locomoção
 
-maquina de estaod 
+def conversor(x):
+    y = (360 * x) / 17.5
+    return y
+# Conversor de graus para cm
+async def pausa (tempo):
+    await runloop.sleep_ms(tempo)
+
+
+async def mover(distancia,velocidade, kp, ki):
+    integral = 0
+    motion_sensor.reset_yaw(0)
+    limite = conversor(distancia)
+    await pausa(400)
+    motor.reset_relative_position(port.A, 0)
+    erro = 0-motion_sensor.tilt_angles()[0]
+
+    integral = integral + erro 
+    correcao = (erro*kp) + (integral*ki)
+    motor_pair.move_tank(motor_pair.PAIR_1,velocidade-correcao,velocidade+correcao)# Ajusta a velocidade
+    while abs (motor.relative_position(port.A)) < limite:
+        pass# Aguardar o motor se mover até o limite
+    motor_pair.stop(motor_pair.PAIR_1)# Para o motor após o movimento
+
+async def curva(angulo, kp, ki):
+    # Usa o sensor de inclinação para controlar a curva
+    motion_sensor.reset_yaw(0)
+    integral = 0
+    while True:
+        erro = angulo - motion_sensor.tilt_angles()[0]  # Calcula o erro de inclinação
+        integral = integral + erro
+        if integral>200:
+            integral = 100
+        correcao  = (erro * kp) + (integral*ki)  # Ajusta a velocidade com o valor proporcional
+        
+        # Movimenta o robô na direção necessária
+        motor_pair.move_tank(motor_pair.PAIR_1, round(correcao * -1), round(correcao))
+
+        # Verifica se o erro é pequeno o suficiente para parar
+        if abs(erro) < 0.01:  # Um pequeno erro de tolerância para parar a curva
+            break  # Sai do loop quando a curva for concluída
+    motor_pair.stop(motor_pair.PAIR_1)# Para os motores ao final da curva
+
+
+
+
+async def start1():
+    #start berçario
+    await pausa (2)
+    await mover(55,400,0,0)
+    await motor.run_for_degrees(port.C,-330,100)
+    await motor.run_for_degrees(port.C,80,100)
+    await motor.run_for_degrees(port.E,-500,400)
+    await mover(9,-200,1,0)
+    await pausa(200)
+    await curva (-340,0.7,0)
+    await pausa(100)
+    await mover (60,-1000,1,0)
+
+
+async def start2():
+    #start mastro
+    await mover (35,400,0,0)
+    await curva(-120,0.7,0)
+    await mover(23,150,0,0)
+    await curva(-700,0.7,0)
+    await mover(12,100,0,0)
+    await mover(20,-200,0,0)
+
+async def start3():
+    #tridente
+    await mover(20,1,1,1)
+
+
+async def start4():
+    #travessia
+    await mover(46,500,0,0)
+    await motor.run_for_degrees(port.E,-400,800)
+    await mover(48,200,1,0)
+    await motor.run_for_degrees(port.E,400,600)
+    await mover(25,-1000,0,0)
+    await motor.run_for_degrees(port.E,-400,500)
+    await mover(30,1000,0,0)
+
+
+
+async def start5():
+    #barquinho
+    await mover(60,300,1,0)
+    await mover(18,-200,1,0)
+    await curva(-480,0.2,0.000001)
+    await mover(4,100,1,0)
+    await motor.run_for_degrees(port.E,700,400)
+    await curva(480,0.5, 0.00005)
+    await mover(18,600,1, 0)
+    await curva(-260,0.7, 0.00001)
+    await motor.run_for_degrees(port.E,400,600)
+    await mover(3,-1000,1,0)
+    await motor.run_for_degrees(port.C,200,200)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,80,-100,100)
+    await mover(60,-1100,0,0)
+
+async def start6():
+    #sonar e polvo
+   await mover(70,600,0,0)
+   await curva(250,0.6,0)
+   await mover(30,600,0,0)
+   await mover(8,-400,0,0)
+   await motor.run_for_degrees(port.C,200,400)
+   await mover(50,-800,0,0)
+   await curva(400,0.7,0)
+   await mover(26,800,0,0)
+   await mover(40,-1000,0,0)
+
+
+async def start7():
+    #baleia 
+    await mover(68.5,400,2,0)
+    await curva(-390,0.6,0.000001)
+    await mover (11,150,0,0)
+    await mover(9,-200,0,0)
+    await curva(-60,0.5,0.000005)
+    await mover(6,-200,1,0)
+    await curva(-530,0.5,0.000001)
+    await mover(37,-1000,1,0)
+    await curva(-400,0.5,0.000001)
+    await mover(13,-300,1,0)
+    await motor.run_for_degrees(port.C,700,400)
+    await pausa(5000)
+    await mover(5,300,0,0)
+
+
+
+starts = [start1, start2, start3,start4,start5,start6,start7]
+indice_atual = 3
+
+async def mudar():
+    global indice_atual
+    while True:
+            if button.pressed(button.RIGHT) or button.pressed(button.LEFT):
+                if indice_atual < len(starts):
+                    await starts[indice_atual]()
+                    indice_atual += 1
+                    await pausa(3)
+
+
+async def main():
+    light_matrix.write("X")
+    while indice_atual < len(starts):
+        await mudar()
+        await pausa(3)
+
+
+
+
+runloop.run(main())
