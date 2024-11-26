@@ -1,0 +1,226 @@
+from hub import light_matrix, port, motion_sensor, button
+import runloop, motor, motor_pair
+
+motor_pair.pair(motor_pair.PAIR_1, port.D, port.A)
+# Definição dos pares de motores de locomoção
+
+def conversor(x):
+    y = (360 * x) / 17.5
+    return y
+# Conversor de graus para cm
+async def pausa (tempo):
+    await runloop.sleep_ms(tempo)
+
+async def moverAz (distancia,velocidade,aceleracao,kp, referencia):
+    def conversor(distancia):
+        graus_motor=(distancia*360)/17.5
+        return graus_motor
+
+    motor.reset_relative_position(port.A,0)
+    distancia_total = conversor(distancia)
+
+    def ajustar_angulo(angulo):
+        # Corrige o valor do ângulo para estar sempre dentro do intervalo [-1790, 1790]
+        if angulo > 1790:
+            angulo -= 3580# Se ultrapassar 1790, retorna para o intervalo negativo
+        elif angulo < -1790:
+            angulo += 3580# Se ultrapassar -1790, retorna para o intervalo positivo
+        return angulo
+
+    angulo_atual = ajustar_angulo(motion_sensor.tilt_angles()[0])
+    erro_angulo = referencia-angulo_atual
+
+    print (erro_angulo)
+
+    if abs(erro_angulo)>0:
+        await giroAz(referencia, 0.5)
+        while distancia_total>abs(motor.relative_position(port.A)):
+            erro = referencia - motion_sensor.tilt_angles()[0]
+            correcao = erro * kp
+            motor_pair.move(motor_pair.PAIR_1, round(correcao*-1), velocity=velocidade, acceleration=aceleracao)
+        motor_pair.stop(motor_pair.PAIR_1)
+
+    else:
+        while distancia_total>abs(motor.relative_position(port.A)):
+            erro = referencia - motion_sensor.tilt_angles()[0]
+            correcao = erro * kp
+            motor_pair.move(motor_pair.PAIR_1, round(correcao*-1), velocity=velocidade, acceleration=aceleracao)
+        motor_pair.stop(motor_pair.PAIR_1)
+
+
+
+async def giro (angulo, kp):
+    if angulo>0:
+        while abs(angulo)>=abs(motion_sensor.tilt_angles()[0]):
+            erro = angulo - motion_sensor.tilt_angles()[0]
+            correcao = erro*kp
+            motor_pair.move_tank(motor_pair.PAIR_1, round(correcao*-1), round(correcao))
+    else:
+        while abs(angulo)>=abs(motion_sensor.tilt_angles()[0]):
+            erro = abs(angulo) - abs(motion_sensor.tilt_angles()[0])
+            correcao = erro*kp
+            motor_pair.move_tank(motor_pair.PAIR_1, round(correcao), round(correcao*-1))
+        motor_pair.stop(motor_pair.PAIR_1)
+
+async def giroAz(angulo, kp):
+    # Recupera o valor atual do sensor de giroscópio em decigraus
+    angulo_atual = motion_sensor.tilt_angles()[0]
+
+    # Função para ajustar o ângulo para o intervalo [-1790, 1790]
+    def ajustar_angulo(angulo):
+        # Corrige o valor do ângulo para estar sempre dentro do intervalo [-1790, 1790]
+        if angulo > 1790:
+            angulo -= 3580# Se ultrapassar 1790, retorna para o intervalo negativo
+        elif angulo < -1790:
+            angulo += 3580# Se ultrapassar -1790, retorna para o intervalo positivo
+        return angulo
+
+    # Ajusta os ângulos de destino para o intervalo [-1790, 1790]
+    angulo_desejado = ajustar_angulo(angulo)
+    angulo_atual = ajustar_angulo(angulo_atual)
+
+    # Determina a direção de rotação (sentido horário ou anti-horário)
+    while abs(angulo_desejado - angulo_atual) > 0:# Um valor pequeno para precisão
+        erro = angulo_desejado - angulo_atual
+        correcao = erro * kp
+        motor_pair.move_tank(motor_pair.PAIR_1, round(correcao * -1), round(correcao))
+        angulo_atual = ajustar_angulo(motion_sensor.tilt_angles()[0])# Atualiza o ângulo atual
+
+    motor_pair.stop(motor_pair.PAIR_1)
+
+
+
+
+
+async def start1():
+    #start M-01(levanta árvore),M-02(Tubarão),M-04(Coleta Mergulhador)
+    motion_sensor.reset_yaw(0)  
+    await moverAz(55,400,1000,0,0)
+    await motor.run_for_degrees(port.C,-330,100) #Cremalheira levanta arvore
+    await motor.run_for_degrees(port.C,80,100) #Abaixa a cremalheira
+    await motor.run_for_degrees(port.E,-500,400) #Coleta mergulhador
+    await moverAz(9,-200,1000,0,0)
+    await pausa(200)
+    await giroAz(-340,0.7)
+    await pausa(100)
+    await moverAz(60,-1000,1000,0,-340)
+
+
+async def start2():
+    #start mastro
+    await moverAz (57.5,400,700,0.3,0) # vai ate o mastro
+    await giroAz(-900,0.45)
+    await moverAz(16,1000,600,0,-900)
+    await pausa(2000)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,230,0,velocity=-250)
+    await moverAz(35,400,500,0,-510)
+    await motor.run_for_degrees(port.E,-200,200)
+    await motor.run_for_degrees(port.C,-300,1000)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,-800,0,velocity=1000)
+
+
+
+async def start3():
+    #tridente
+    motion_sensor.tilt_angles()[0]
+    await moverAz(40,400,500,0,0)
+    await giroAz(380,0.7)
+    await moverAz(30,200,500,0,380)
+    await motor.run_for_degrees(port.E,-300,300)
+    await moverAz(20,-100,300,0,380)
+
+
+async def start4():
+    #travessia
+    await mover(46,500,0,0) #entrega as amostras (garrafa de agua, leito marinho, tridente e báu)
+    await motor.run_for_degrees(port.E,-400,800) #abaixa a garra que leva o navio
+    await mover(48,200,1,0) # reta que leva o navio ate o porto
+    await motor.run_for_degrees(port.E,400,600) #levanta a garra
+    await mover(25,-1000,0,0) #da ré para a garra se direcionar a parte traseira do navio
+    await motor.run_for_degrees(port.E,-400,500) #abaixa a garra para levar o navio por trás
+    await mover(31,1000,0,0) # entrega o navio
+    await mover(23,-200,0,0)
+    await motor.run_for_degrees(port.E,600,600)
+    await curva(300,0.6,0)
+    await mover(30,500,0,0)
+    await curva(-500,0.7,0)
+    await mover(30,600,0,0)
+    await curva(-300,0.7,0)
+    await mover(30,500,0,0)
+    await motor
+
+
+
+async def start5():
+    #barquinho
+    await mover(60,300,1,0) #reta que se direciona ate o barco e que tira o coral da frente da M-13
+    await mover(18,-200,1,0) # depois que tira o coral ele volta para a M-13
+    await curva(-480,0.2,0.000001) #curva para o barco
+    await mover(4,100,1,0) #viga bate no barco para a garra ir por baixo do barco
+    await motor.run_for_degrees(port.E,700,400) #gira a garra
+    await curva(480,0.5, 0.00005) #curva para fazer a coleta da amostra de plancton e dos krills
+    await mover(18,600,1, 0) # reta para fazer as coletas
+    await curva(-260,0.7, 0.00001) #curva para pegfar a amostra de plâncton
+    await motor.run_for_degrees(port.E,400,600) #gira a garra para pegar a amostra
+    await mover(3,-1000,1,0)
+    await motor.run_for_degrees(port.C,200,200) #derruba a "caixa de coleta"
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,80,-100,100) #coleta tudo com a "caixa de coleta"
+    await mover(60,-1100,0,0) #volta a base
+
+async def start6():
+    #sonar e polvo
+
+  await mover(70,600,0,0) #vai ate o sonar
+  await curva(250,0.6,0) #curva para o sonar
+  await mover(30,600,0,0) # se alinha ao sonar
+  await mover(8,-400,0,0) # se ajusta para realizar o sonar
+  await motor.run_for_degrees(port.C,200,400) #realiza o sonar
+  await mover(50,-800,0,0) # vai ate o polvo
+  await curva(400,0.7,0) #se ajusta para o polvo
+  await mover(26,800,0,0) # pega o polvo
+  await mover(40,-1000,0,0) #volta para à base
+
+
+async def start7():
+    #baleia
+    motion_sensor.tilt_angles()[0]
+    await moverAz(68.5,400,500,0,0) #vai a baleia
+    await giroAz(-390,0.6,) #curva para ir a baleia
+    await moverAz (11,150,500,0,-390) #Realiza a baleia
+    await moverAz(9,-200,500,0,-390) #se afasta da baleia
+    await giroAz(-60,0.5) #se ajusta para ir a compartilhada
+    await moverAz(6,-200,500,0,-60)# se ajusta para a compartilhada
+    await giroAz(-530,0.5) #se ajusta para a compartilhada
+    await moverAz(37,-1000,500,0,-530) # vai ate a compartilhada
+    await giroAz(-400,0.5) #curva de ajuste para se alinhar com a compartilhhada
+    await moverAz(13,-300,500,0,-400) #chega na compartilhada
+    await motor.run_for_degrees(port.C,700,400) #cremalheira levanta para realizar a compartilhada
+    await pausa(5000) # espera o submarino descer
+    await moverAz(5,300,500,0,-400) #entrega o polvo e se afsta da compartilhada
+
+
+
+starts = [start1, start2, start3,start4,start5,start6,start7]
+indice_atual = 1
+
+async def mudar():
+    global indice_atual
+    while True:
+            if button.pressed(button.RIGHT) or button.pressed(button.LEFT):
+                motion_sensor.reset_yaw(0)
+
+                if indice_atual < len(starts):
+                    await starts[indice_atual]()
+                    indice_atual += 1
+                    await pausa(1)
+
+
+async def main():
+    light_matrix.write("X")
+    while indice_atual < len(starts):
+        await mudar()
+
+
+
+
+runloop.run(main())
