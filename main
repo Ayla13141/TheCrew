@@ -109,17 +109,18 @@ async def start1():
 
 async def start2():
     #start mastro
-    await moverAz (56,400,700,0.3,0) # vai ate o mastro
-    await pausa(1000)
-    await giroAz(-900,0.7)
-    await moverAz(16,1000,600,0,-900)
+    await moverAz (60,400,700,0.3,0) # vai ate o mastro
+    await giroAz(-900,0.5)
+    await moverAz(19,150,100,0,-900)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,400,0,velocity=-200)
+    await moverAz(70,-1000,10000,0,0)
 
 
 async def start3():
     #entrega mergulhador
     await moverAz(60,500,1000,0,0)
-    await moverAz(37,500,1000,0,-530)
-    await motor.run_for_degrees(port.C,-300,300)
+    await moverAz(36,500,1000,0,-520)
+    await motor.run_for_degrees(port.C,-400,500)
     #await moverAz(11,600,500,0,-530)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,175,0,velocity=600)
     await motor.run_for_degrees(port.E,800,1000)
@@ -174,7 +175,7 @@ async def start7():
     await motor.run_for_degrees(port.C,500,500)
 
 starts = [start1, start2, start3,start4,start5,start7]
-indice_atual = 3
+indice_atual = 1
 
 async def mudar():
     global indice_atual
