@@ -130,7 +130,7 @@ async def start3():
 async def start4():
     #tridente
     await moverAz(46,300,500,0,0)
-    await moverAz(33,400,500,0,430)
+    await moverAz(33,400,500,0,445)
     await motor.run_for_degrees(port.E,-300,30)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,400,0,velocity=-50)
     await moverAz(70,-800,500,0,400)
@@ -174,7 +174,7 @@ async def start7():
     await motor.run_for_degrees(port.C,500,500)
 
 starts = [start1, start2, start3,start4,start5,start7]
-indice_atual = 2
+indice_atual = 3
 
 async def mudar():
     global indice_atual
