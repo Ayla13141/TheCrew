@@ -113,25 +113,32 @@ async def start2():
     await pausa(1000)
     await giroAz(-900,0.7)
     await moverAz(16,1000,600,0,-900)
-    '''await motor_pair.move_for_degrees(motor_pair.PAIR_1,230,0,velocity=-250)
-    await moverAz(35,400,500,0,-510)
-    await motor.run_for_degrees(port.E,-200,200)
-    await motor.run_for_degrees(port.C,-300,1000)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,-800,0,velocity=1000)
-'''
 
 
 async def start3():
-    #tridente
-    motion_sensor.tilt_angles()[0]
-    await moverAz(40,400,500,0,0)
-    await giroAz(380,0.7)
-    await moverAz(30,200,500,0,380)
-    await motor.run_for_degrees(port.E,-300,300)
-    await moverAz(20,-100,300,0,380)
-
+    #entrega mergulhador
+    await moverAz(60,500,1000,0,0)
+    await moverAz(37,500,1000,0,-530)
+    await motor.run_for_degrees(port.C,-300,300)
+    #await moverAz(11,600,500,0,-530)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,175,0,velocity=600)
+    await motor.run_for_degrees(port.E,800,1000)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,750,0,velocity=-1000)
+    #await motor.run_for_degrees(port.C,-300,300)
+    await moverAz(90,-1100,10000,0,-300)
 
 async def start4():
+    #tridente
+    await moverAz(46,300,500,0,0)
+    await moverAz(33,400,500,0,430)
+    await motor.run_for_degrees(port.E,-300,30)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,400,0,velocity=-50)
+    await moverAz(70,-800,500,0,400)
+
+
+
+
+async def start5():
     #travessia
     await moverAz(46,500,0,0) #entrega as amostras (garrafa de agua, leito marinho, tridente e báu)
     await motor.run_for_degrees(port.E,-400,800) #abaixa a garra que leva o navio
@@ -151,15 +158,6 @@ async def start4():
     await motor
 
 
-
-async def start5():
-    #barquinho
-   #await moverAz(42,300,500,0,0)
-   #await moverAz(2.5,200,500,0,-410)
-   await motor.run_for_degrees(port.E,1000,1000)
-   #await moverAz(20,-200,500,0,-420)
-
-
 async def start7():
     #baleia
     await moverAz(64,300,500,0,0) #vai a baleia
@@ -176,7 +174,7 @@ async def start7():
     await motor.run_for_degrees(port.C,500,500)
 
 starts = [start1, start2, start3,start4,start5,start7]
-indice_atual = 5
+indice_atual = 2
 
 async def mudar():
     global indice_atual
