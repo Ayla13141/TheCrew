@@ -1,6 +1,5 @@
 
-
-   from hub import light_matrix, port, motion_sensor, button
+from hub import light_matrix, port, motion_sensor, button
 import runloop, motor, motor_pair
 
 motor_pair.pair(motor_pair.PAIR_1, port.D, port.A)
@@ -162,15 +161,15 @@ async def start5():
 
 async def start6():
     #barquinho
-    await moverAz(42.5,300,500,0,0)
+    await moverAz(42,300,500,0,0)
     await giroAz(-430,0.5)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,130,0,velocity=200)
-    await motor.run_for_degrees(port.E,700,500)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,110,0,velocity=200)
+    await motor.run_for_degrees(port.E,700,600)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,120,0,velocity=-200)
-    await moverAz(26.5,500,500,0,-190)
+    await moverAz(24,500,500,0,-180)
     await motor.run_for_degrees(port.E,500,1000)
     await motor.run_for_degrees(port.C,300,1000)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1500,-900,-750)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1500,-900,-700)
 async def start7():
     #baleia
     await moverAz(67,400,500,0,0) #vai a baleia
@@ -193,7 +192,7 @@ async def start7():
     await moverAz(14,200,500,0,-1300)
 
 starts = [start1, start2, start3,start4,start5,start6,start7]
-indice_atual = 3
+indice_atual = 5
 
 async def mudar():
     global indice_atual
