@@ -102,9 +102,6 @@ async def start1():
     await motor.run_for_degrees(port.C,300,500) #Abaixa a cremalheira
     await motor.run_for_degrees(port.E,-500,400) #Coleta mergulhador
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,300,0,velocity=-300)
-    '''while (motion_sensor.tilt_angles()[0]>-350):
-        motor.run(port.A,-700)'''
-    #motor_pair.stop(motor_pair.PAIR_1)
     await giroAz(-320,1.5)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,1200,0,velocity=-1100,acceleration=10000)
 
