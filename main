@@ -138,10 +138,8 @@ async def start3():
 
     await moverAz(15,1100,10000,0,900)
     await moverAz(50,-1100,10000,0,-200)
-'''
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,150,0,velocity=-500)
-    await giroAz(-400,1)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,2000,0,velocity=-1100)'''
+
+   
 
 
 
@@ -202,7 +200,7 @@ async def start7():
     await pausa(2000)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,250,200,200)
 starts = [start1, start2, start3,start4,start5,start6,start7]
-indice_atual = 1
+indice_atual = 5
 
 async def mudar():
     global indice_atual
