@@ -105,7 +105,7 @@ async def start1():
     await motor.run_for_degrees(port.E,500,1000)
     await motor.run_for_degrees(port.C,200,1000)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,320,400,-400)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1500,-700,-1100)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1700,-600,-1100)
 
 async def start2():
     #start mastro
@@ -148,14 +148,13 @@ async def start3():
 
 async def start4():
     #tridente
-    await moverAz(50,300,10000,0,0)
-    await moverAz(19,300,500,0,410)
-    await motor.run_for_degrees(port.E,-500,1100)
-    #await moverAz(15,-50,500,0,410)
+    await moverAz(55,300,10000,0,0)
+    await moverAz(21,300,500,0,470)
+    await motor.run_for_degrees(port.E,-150,500)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,300,0,velocity=-50)
-    await motor.run_for_degrees(port.E,600,1000)
+    await motor.run_for_degrees(port.E,-300,1100)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,100,0,velocity=-50)
-    await giroAz(200,1)
+    await giroAz(100,1)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,1200,0,velocity=-1000)
 
 
@@ -215,7 +214,7 @@ async def start8():
     await pausa(2000)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,250,200,200)
 starts = [start1, start2, start3,start4,start5,start6,start7,start8]
-indice_atual = 7
+indice_atual = 0
 
 async def mudar():
     global indice_atual
