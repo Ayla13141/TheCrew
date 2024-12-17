@@ -95,7 +95,7 @@ async def giroAz(angulo, kp):
 
 async def start1():
     #start M-01(levanta árvore),M-02(Tubarão),M-04(Coleta Mergulhador)
-    await moverAz(50,600,5000,0.4,0)
+    await moverAz(49.5,700,5000,0.4,0)
     await moverAz(2,300,5000,0,0)
     await motor.run_for_degrees(port.C,-500,700) #Cremalheira levanta arvore
     await pausa(1000)
@@ -105,41 +105,47 @@ async def start1():
     await motor.run_for_degrees(port.E,500,1000)
     await motor.run_for_degrees(port.C,200,1000)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,320,400,-400)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1700,-600,-1100)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1900,-600,-1100)
 
 async def start2():
     #start mastro
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1030,0,velocity=300)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1070,0,velocity=400)
     #await moverAz (48,300,2000,0.5,0) # vai ate o mastro
-    while (motion_sensor.tilt_angles()[0]<-880):
+    while (motion_sensor.tilt_angles()[0]<-865):
         motor_pair.move_tank(motor_pair.PAIR_1,200,-200)
     #await giroAz(-900,0.7)
-    await moverAz (5,200, 200, 0.5, -880)
-    await pausa (500)
+    await moverAz (5,200, 200, 0.5, -865)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,500,0,velocity=400)
-    await motor.run_for_degrees(port.E,200,500)
+    await motor.run_for_degrees(port.E,200,1000)
     await pausa(500)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,530,0,velocity=-400)
-    await moverAz(70,-1100,10000,0,-150)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,570,0,velocity=-500)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,500,-1100,1100)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1400,0,velocity=-1100)
+    ''' while (motion_sensor.tilt_angles()[0]<-100):
+        motor_pair.move_tank(motor_pair.PAIR_1,-600,600)
+    motor_pair.stop(motor_pair.PAIR_1)'''
 
 
 async def start3():
     #entrega mergulhador
-    await motor.run_for_degrees(port.E,-500,1100)
-    await moverAz(61.5,600,1000,0,0)
-    await moverAz(35,600,1000,0,-550)
-    await motor.run_for_degrees(port.C,-450,900)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,200,0,velocity=300)
+    await moverAz(62,700,1000,0,0)
+    await moverAz(30,700,1000,0,-570)
+    await motor.run_for_degrees(port.C,-250,1000)
+    await motor.run_for_degrees(port.C,250,1100)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,250,0,velocity=300)
+    #await motor.run_for_degrees(port.C,450,1000)
     await motor.run_for_degrees(port.E,1100,1100)
-    await moverAz(16,300,500,0,-1200)
-    await motor.run_for_degrees(port.C,400,900)
+    await moverAz(9,800,1000,0,-1200)
     while (abs(motion_sensor.tilt_angles()[0])<1780):
         motor_pair.move_tank(motor_pair.PAIR_1,300,-300)
 
     motor_pair.stop(motor_pair.PAIR_1)
 
-    await moverAz(17,1100,10000,0,950)
-    await moverAz(70,1100,10000,0,1400)
+    await moverAz(19,1100,10000,0,950)
+    await giroAz(1400,1)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1500,0,velocity=1100,acceleration=10000)
+
+    #await moverAz(75,1100,10000,0,1400)
 
 
 
@@ -148,14 +154,14 @@ async def start3():
 
 async def start4():
     #tridente
-    await moverAz(55,300,10000,0,0)
-    await moverAz(21,300,500,0,470)
+    await moverAz(50,600,1000,0,0)
+    await moverAz(27,300,500,0,470)
     await motor.run_for_degrees(port.E,-150,500)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,300,0,velocity=-50)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,400,0,velocity=-70)
     await motor.run_for_degrees(port.E,-300,1100)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,100,0,velocity=-50)
     await giroAz(100,1)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1200,0,velocity=-1000)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1500,0,velocity=-1000)
 
 
 
@@ -214,7 +220,7 @@ async def start8():
     await pausa(2000)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,250,200,200)
 starts = [start1, start2, start3,start4,start5,start6,start7,start8]
-indice_atual = 0
+indice_atual = 3
 
 async def mudar():
     global indice_atual
