@@ -27,8 +27,8 @@ async def moverAz (distancia,velocidade,aceleracao,kp, referencia):
         elif angulo < -1790:
             angulo += 3580# Se ultrapassar -1790, retorna para o intervalo positivo
         return angulo
-    
-       
+
+
 
     angulo_atual = ajustar_angulo(motion_sensor.tilt_angles()[0])
     erro_angulo = referencia-angulo_atual
@@ -81,7 +81,7 @@ async def giroAz(angulo, kp, ki,kd):
     angulo_atual = ajustar_angulo(angulo_atual)
     integral = 0
     last_error = 0
-    
+
     # Determina a direção de rotação (sentido horário ou anti-horário)
     while abs(angulo_desejado - angulo_atual) > 10:# Um valor pequeno para precisão
         erro = angulo_desejado - angulo_atual
@@ -108,11 +108,14 @@ async def start1():
     await pausa(200)
     await motor.run_for_degrees(port.C,100,800) #Abaixa a cremalheira
     await motor.run_for_degrees(port.E,-600,500) #Coleta mergulhador
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,350,0,velocity=-200)
-    await motor.run_for_degrees(port.E,300,1000)
-    await motor.run_for_degrees(port.C,200,1000)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,320,400,-400)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1900,-600,-1100)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,280,0,velocity=-200)
+    motor.run_for_degrees(port.E,300,1000)
+    motor.run_for_degrees(port.C,200,1000)
+    while (motion_sensor.tilt_angles()[0]>-250):
+        motor_pair.move_tank(motor_pair.PAIR_1,200,-200)
+    motor_pair.stop(motor_pair.PAIR_1)
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,320,400,-400)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1200,0,velocity=-1100)
 
 async def start2():
     #start mastro
@@ -157,12 +160,10 @@ async def start3():
 async def start4():
     #tridente
     await moverAz(54,500,1000,0.2,0)
-    await giroAz(450, 0.35, 0.00001, 0)
+    await giroAz(460, 0.35, 0.00001, 0)
     await moverAz(12,300,500,0,450)
     await motor.run_for_degrees(port.E,-150,500)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,350,0,velocity=-70)
-    await motor.run_for_degrees(port.E,-300,1100)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,100,0,velocity=-50)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,350,0,velocity=-500)
     await giroAz(100,1,0,0)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,1500,0,velocity=-1000)
 
@@ -199,7 +200,7 @@ async def start7():
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1600,-1100,-750)
 
 '''async def start8():
-    #entrega dos corais 
+    #entrega dos corais
     await moverAz(15,100,500,0,0)
     await motor.run_for_degrees(port.C,60,1100)
     await motor.run_for_degrees(port.C,-100,1100)
@@ -219,9 +220,9 @@ async def start9():
     await motor.run_for_degrees(port.C,500,1000)
     await pausa(3000)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,300,0,velocity=1100)
-   
+
 starts = [start1, start2, start3,start4,start5,start6,start7,start9]
-indice_atual = 3
+indice_atual = 0
 
 async def mudar():
     global indice_atual
