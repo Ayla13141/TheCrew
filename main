@@ -108,7 +108,7 @@ async def start1():
     await motor.run_for_degrees(port.E,900,400)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,130,0,velocity=-200)
     motor.run_for_degrees(port.E,-170,500)
-    await moverAz(25.5,900,500,0,-120)
+    await moverAz(24,900,500,0,-130)
     await motor.run_for_degrees(port.E,300,400)
     await motor.run_for_degrees(port.C,120,1100)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1600,-1100,-750)
@@ -120,7 +120,8 @@ async def start2():
     await giroAz(350,0.7,0,0)
     await moverAz(38,1000,500,0,350)
     await moverAz(15,500,5000,0,0)
-    await motor.run_for_degrees(port.C,500,1100,acceleration=1000)
+    await motor.run_for_degrees(port.C,-600,1100,acceleration=1000)
+    await motor.run_for_degrees(port.C,100,1100,acceleration=1000)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,170,0,velocity=-500)
     await pausa(300)
     await moverAz(57,500,2000,0,650)
@@ -129,7 +130,7 @@ async def start2():
     await moverAz(35,900,5000,0,1100)
     await moverAz(70,1100,100000,0,1550)
 
-    
+
 
 async def start3():
     #start M-01(levanta árvore),M-02(Tubarão),M-04(Coleta Mergulhador)
@@ -144,21 +145,25 @@ async def start3():
 
 async def start4():
     #entrega do mergulhador e levantamento do mastro
-    await moverAz(55,600,1000,0.2,0)
-    await giroAz(-510,0.5,0,0)
-    await moverAz(40.7,600,1000,0,-510)
-    await motor.run_for_degrees(port.C,-500,1000,acceleration=10000)
+    await moverAz(55,500,1000,0.2,0)
+    await pausa(300)
+    await giroAz(-510,0.6,0.000001,0)
+    await moverAz(39,600,1000,0,-510)
+    await motor.run_for_degrees(port.C,-600,1100)
 
     await pausa(200)
-    await moverAz(50,-500,5000,0,-510)
-    motor.run_for_degrees(port.C,270,1000)
+    await moverAz(47,-500,5000,0,-500)
+    motor.run_for_degrees(port.C,50,1000)
 
     #await motor_pair.move_for_degrees(motor_pair.PAIR_1,1000,0,velocity=-600)
-    await moverAz(20,800,5000,0,-880)
+    await moverAz(22,500,5000,0,-885)
 
-    await motor.run_for_degrees(port.E,500,1100,acceleration=10000)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,480,0,velocity=-700)
+    await motor.run_for_degrees(port.E,100,1100,acceleration=10000)
+    await pausa(200)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,520,0,velocity=-700)
+    await motor.run_for_degrees(port.C,100,1000)
     #await moverAz(6,-800,5000,0,-880)
+    await giroAz(-200,1,0,0)
     await moverAz(60,-1100,10000,0,-200)
     '''await moverAz (5,200, 200, 0.5, -865)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,500,0,velocity=400)
@@ -182,16 +187,27 @@ async def start5():
 
 async def start6():
     #travessia
-    await moverAz(93, 1100,1000,0.5,0)
+    await moverAz(93, 1100,5000,0.5,0)
     await motor.run_for_degrees(port.C,300,1100)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,400,0,velocity=-200)
-    #motor_pair.move_for_degrees(motor_pair.PAIR_1,300,0,velocity=-100)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,410,0,velocity=-200)
+    #programação com curva
+    await motor.run_for_degrees(port.C,-5000,3000,acceleration=10000)
+    await motor.run_for_degrees(port.E,500,1100)
+    await giroAz(900, 0.7,0,0)
+    await moverAz(12, 500, 2000, 0, 900)
+    await giroAz(0, 0.7,0,0)
+    await moverAz(65, 1100,1000,0,0)
+    await giroAz(-480, 0.55, 0.000002, 0)
+    #volta pra base 
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1, 530, 0, velocity=-1100)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,750,0,velocity=1100,acceleration=10000)
+    '''#motor_pair.move_for_degrees(motor_pair.PAIR_1,300,0,velocity=-100)
     await pausa(300)
     #await motor_pair.move_for_degrees(motor_pair.PAIR_1,20,0,velocity=-100)
     await motor.run_for_degrees(port.C,-300,600)
     motor.run_for_degrees(port.E,200,500)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,1400,0,velocity=-1100)
-    #await motor_pair.move_for_degrees(motor_pair.PAIR_1,800,0,velocity=-1100)
+    #await motor_pair.move_for_degrees(motor_pair.PAIR_1,800,0,velocity=-1100)'''
 
 async def start7():
     #travessia 2
@@ -239,8 +255,8 @@ async def start9():
 
 
 
-starts = [start1, start2, start3,start4,start6,start7,start8,start9]
-indice_atual = 3
+starts = [start1, start2, start3,start4,start5,start6,start7,start9]
+indice_atual = 5
 
 
 async def mudar():
