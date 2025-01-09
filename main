@@ -145,7 +145,7 @@ async def start3():
 
 async def start4():
     #levantamento do mastro
-    await moverAz(44,600,500,0,0)
+    await moverAz(43.5,600,500,0,0)
     await pausa(200)
     while motion_sensor.tilt_angles()[0]>-855:
         motor_pair.move_tank(motor_pair.PAIR_1,300,0)
@@ -156,14 +156,14 @@ async def start4():
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,500,0,velocity=-1100)
     await giroAz(-200,1,0,0)
     await moverAz(60,-1100,10000,0,-200)
-    
+
 async def start5():
-    #entrega do mergulhador 
+    #entrega do mergulhador
     await moverAz(59,600,500,0,0)
-    await moverAz(30,500,500,0,-500)
+    await moverAz(30,500,500,0,-510)
     await motor.run_for_degrees(port.C,-500,600)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1750,-1100,-850)
-  
+
 
 
 async def start6():
