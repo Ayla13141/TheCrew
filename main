@@ -99,23 +99,23 @@ async def start1():
 
 async def start2():
     #primeira travessia
-    await moverAz(28,700,5000,0,0)#sai da base
+    '''await moverAz(28,700,5000,0,0)#sai da base
     await giroAz(370,0.6,0,0)#se ajusta a o sonar
     await moverAz(39,700,5000,0,370)#vai ate o sonar
     await moverAz(13,400,5000,0,10)#chega no sonar
     await motor.run_for_degrees(port.C,-500,1100,acceleration=10000)#realiza o sonar
     #await motor.run_for_degrees(port.C,150,1100,acceleration=1000)#volta a garra que realiza o sonar
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,100,0,velocity=-400)#se afasta do sonar
-    await pausa(100)
+    await pausa(100)'''
     '''  await giroAz(700,0.6,0,0)
     await moverAz(43,400,2000,0,700)#vai ate o leito marinho, #era 610'''
-    await giroAz(900,0.5,0,0)
+    #await giroAz(900,0.5,0,0)
     #await motor_pair.move_for_degrees(motor_pair.PAIR_1,60,0,velocity=600)
     ''' await motor.run_for_degrees(port.E,-300,1100)
 
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,250,500,500)'''
 
-    await moverAz(48.5,500,500,0,900)
+    '''await moverAz(48.5,500,500,0,900)
     await motor.run_for_degrees(port.E,-680,1000,acceleration=10000)#coleta leito marinho
     await moverAz(15,500,500,0.2,900)
     await motor.run_for_degrees(port.E,670,1000,acceleration=10000)#coleta leito marinho
@@ -126,9 +126,31 @@ async def start2():
 
 
 
-    '''
+    
     await moverAz(31,1100,1000,0,1160)#se ajusta para coletas as coisas
     await moverAz(73,1100,10000,0,1610)#volta a base'''
+
+    await moverAz(2,600,5000,0,0)
+    await giroAz(450,0.7,0,0)
+    await moverAz(94,800,5000,0.2,450)
+    await giroAz(0,0.7,0,0)
+    await moverAz(20,400,5000,0,0)
+    await motor.run_for_degrees(port.C,30,1000,acceleration=10000)
+    await motor.run_for_degrees(port.E,400,1000,acceleration=10000)#coleta leito marinho
+    await moverAz(10,-400,5000,0,0)
+    await giroAz(-900,0.4,0,0)
+    await moverAz(30,-400,5000,0,-900)
+    await giroAz(-430,0.7,0,0)
+    await motor.run_for_degrees(port.C,100,1100,acceleration=10000)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1500,-1100,-1100)
+
+
+
+
+
+
+
+    
 
 
 
@@ -203,20 +225,22 @@ async def start7():
 
 async def start9():
     #baleia
-    await moverAz(60,1100,5000,0,0) #vai a baleia
+    await moverAz(62,1100,5000,0,0) #vai a baleia
     await giroAz(-320,0.5,0.00001,0)#gira para a baleia
     await moverAz(10,300,500,0,-320)#ativa a baleia
     await motor.run_for_degrees(port.E,500,-300,acceleration=5000)#derruba os krills
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,250,0,velocity=-1100)#se afasta da baleia
-    await moverAz(41,-1100,5000,0,-900)#vai ate a compartilhada
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,170,0,velocity=-1100)#se afasta da baleia
+    await moverAz(25,-800,5000,0,-900)#vai ate a compartilhada
+    await motor.run_for_degrees(port.C,650,1100)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,650,0,velocity=-1100)
     await giroAz(-1400,0.7,0,0)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,400,-500,-500) #chega na compartilhada e realiza a compartilhada
     await pausa(500)#pausa para o submarino ir para o outro lado
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,200,0,velocity=1100)#sai da compartilhada
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,200,0,velocity=1100)#sai da compartilhada'''
    
 
 starts = [start1, start2, start3,start4,start6,start7,start9]
-indice_atual = 0
+indice_atual = 6
 
 async def mudar():
     global indice_atual
