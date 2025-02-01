@@ -169,7 +169,7 @@ async def start4():
     #await motor_pair.move_for_degrees(motor_pair.PAIR_1,1310,0,velocity=600, acceleration=7000)#volta a base
     await moverAz(48,400,3000,0.1,0)
     await giroAz(-490,0.8,0.000002,0)
-    await moverAz(47,600,5000,0,-490)
+    await moverAz(46,600,5000,0,-490)
     await motor.run_for_degrees(port.C,-500,1100,acceleration=10000) #Coleta mergulhador e realiza ramos de coral
     await moverAz(45,-500,4000,0,-520)
     await giroAz(-900,0.7,0,0)
@@ -274,7 +274,7 @@ async def start9():
 
 
 starts = [start1, start2, start3,start4,start5,start6,start7,start9]
-indice_atual = 1
+indice_atual = 3
 
 
 async def mudar():
