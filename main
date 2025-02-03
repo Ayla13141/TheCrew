@@ -173,15 +173,15 @@ async def start4():
     await motor.run_for_degrees(port.C,-500,1100,acceleration=10000) #Coleta mergulhador e realiza ramos de coral
     await moverAz(45,-500,4000,0,-520)
     await giroAz(-900,0.7,0,0)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,600,0,velocity=500, acceleration=10000)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,600,0,velocity=400, acceleration=10000)
 
     await motor.run_for_degrees(port.E,100,1000) #Coleta mergulhador e realiza ramos de coral
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,50,0,velocity=-50, acceleration=10000)#volta a base
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,510,0,velocity=-600, acceleration=10000)#volta a bas
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,630,0,velocity=-600, acceleration=10000)#volta a bas
     motion_sensor.reset_yaw(0)
-    await giroAz(-1000,0.5,0,0)
+    await giroAz(700,0.7,0,0)
 
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,650,0,velocity=899, acceleration=10000)#volta a base
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1700,0,velocity=-1100, acceleration=10000)#volta a base
 
 
 
