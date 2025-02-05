@@ -158,12 +158,13 @@ async def start2():
 
 async def start3():
     #start M-01(levanta Ã¡rvore),M-02(TubarÃ£o),M-04(Coleta Mergulhador)
-    await moverAz(51.7,400,3000,0.2,0)#vai ate o berçario
+    await moverAz(52.4,400,3000,0.4,0)#vai ate o berçario
+   
     await motor.run_for_degrees(port.C,-600,1100,acceleration=10000) #Cremalheira levanta berçario
     await pausa(200)
     await motor.run_for_degrees(port.E,-800,1000) #Coleta mergulhador e realiza ramos de coral
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,1100,0,velocity=-1100, acceleration=10000)#volta a base
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,400,0,1100)#curva de ajuste para entrar totalmente na base
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1100,0,1100)#curva de ajuste para entrar totalmente na base
 
 async def start4():
     #await motor_pair.move_for_degrees(motor_pair.PAIR_1,1310,0,velocity=600, acceleration=7000)#volta a base
@@ -205,8 +206,9 @@ async def start4():
 
 
 async def start5():
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,100,0,velocity=-100)
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,120,0,velocity=1100)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,120,0,velocity=100)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,120,0,velocity=-1100)
+    await giroAz(-840,1,0,0)
 
 
 async def start6():
@@ -275,7 +277,7 @@ async def start9():
 
 
 starts = [start1, start2, start3,start4,start5,start6,start7,start9]
-indice_atual = 1
+indice_atual = 2
 
 
 async def mudar():
