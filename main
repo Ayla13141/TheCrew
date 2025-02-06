@@ -149,7 +149,7 @@ async def start2():
     #await moverAz(9,-600,5000,0,0)
     #await pausa(100)
     await giroAz(-900,0.5,0,0)
-    await moverAz(22,-1100,5000,0,-900)
+    await moverAz(24,-1100,5000,0,-900)
     motor.run_for_degrees(port.C,-250,1100,acceleration=10000)
     await giroAz(-340,0.7,0,0)
     await motor.run_for_degrees(port.C,200,1100,acceleration=10000)
@@ -158,8 +158,8 @@ async def start2():
 
 async def start3():
     #start M-01(levanta Ã¡rvore),M-02(TubarÃ£o),M-04(Coleta Mergulhador)
-    await moverAz(52.4,400,3000,0.4,0)#vai ate o berçario
-   
+    await moverAz(52.2,400,3000,0.4,0)#vai ate o berçario
+
     await motor.run_for_degrees(port.C,-600,1100,acceleration=10000) #Cremalheira levanta berçario
     await pausa(200)
     await motor.run_for_degrees(port.E,-800,1000) #Coleta mergulhador e realiza ramos de coral
@@ -168,27 +168,52 @@ async def start3():
 
 async def start4():
     #await motor_pair.move_for_degrees(motor_pair.PAIR_1,1310,0,velocity=600, acceleration=7000)#volta a base
-    await moverAz(37,400,3000,0.1,0)
-    await giroAz(-470,0.6,0,0)
-    await moverAz(64,600,5000,0.2,-470)
+    await moverAz(23,800,5000,0.2,0)
+    await giroAz(-220,0.6,0,0)
+    await moverAz(22,600,5000,0.2,-220)
+    await pausa (200)
+    await giroAz(-900,1,0,0)
+    await moverAz(24,600,5000,0,-900)
+    await moverAz(10,-600,5000,0,-900)
+
+
+
+
+
+    '''
+    await moverAz(4,600,5000,0,0)
+    await pausa(200)
+    await giroAz(-230,0.65,0,0)
+    await moverAz(120,600,5000,0,-230)
+
+
+
+
+    await moverAz(30.5,600,5000,0,0)
+    await pausa(200)
+    await giroAz(-430,0.65,0,0)
+
+
+    await pausa(200)
+    await moverAz(64,600,5000,0.2,-430)
     await motor.run_for_degrees(port.C,-600,1100,acceleration=10000) #Coleta mergulhador e realiza ramos de coral
-    await moverAz(42.5,-500,4000,0,-510)
+    await moverAz(43.4,-400,1000,0,-510)
     await giroAz(-900,0.7,0,0)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,550,0,velocity=400, acceleration=10000)
 
     await motor.run_for_degrees(port.E,90,1000) #Coleta mergulhador e realiza ramos de coral
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,50,0,velocity=-50, acceleration=10000)#volta a base
     await motor_pair.move_for_degrees(motor_pair.PAIR_1,540,0,velocity=-600, acceleration=10000)#volta a bas
-    motor.run_for_degrees(port.C,300,1100,acceleration=10000)
+    motor.run_for_degrees(port.C,-300,1100,acceleration=10000)
     motion_sensor.reset_yaw(0)
-    await giroAz(650,0.7,0,0)
+    await giroAz(700,0.7,0,0)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1500,-1100,-900)
 
-
+    
 
 
     #levantamento do mastr
-    '''await motor_pair.move_for_degrees(motor_pair.PAIR_1,1150,0,velocity=500)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1150,0,velocity=500)
 
     await giroAz(-900,0.7,0,0)
     await pausa(300)
@@ -277,7 +302,7 @@ async def start9():
 
 
 starts = [start1, start2, start3,start4,start5,start6,start7,start9]
-indice_atual = 2
+indice_atual = 3
 
 
 async def mudar():
