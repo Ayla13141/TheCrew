@@ -177,7 +177,9 @@ async def start4():
     await motor.run_for_degrees(port.E,100,1100)
     await moverAz(20,-500,5000,0,-900)
     motion_sensor.reset_yaw(0)
-    await moverAz(60,-400,5000,0,-1790)
+    await pausa(300)
+    await giroAz(-900,0.7,0,0)
+    await moverAz(60,-400,5000,0,-900)
 
 
 
