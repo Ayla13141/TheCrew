@@ -146,7 +146,7 @@ async def start2():
     await motor.run_for_degrees(port.E,550,1100,acceleration=3000)#coleta leito marinho
     motor.run_for_degrees(port.C,-250,1100,acceleration=5000)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,260,-400,-400)
-    #await moverAz(9,-600,5000,0,0)
+    #await moverAz(9,-600,5000,0,0)]
     #await pausa(100)
     await giroAz(-900,0.5,0,0)
     await moverAz(24,-1100,5000,0,-900)
@@ -250,7 +250,8 @@ async def start5():
 async def start6():
     #tridente
     await moverAz(47.5,1000,1000,0,0)
-    await giroAz(480,0.7,00000.1,0)
+    await giroAz(350,0.7,00000.1,0)
+    await moverAz(7,1100,1000,0,350)
     await pausa(100)
     await moverAz(22,500,1000,0,480)
     await motor.run_for_degrees(port.E,-400,1100)
@@ -313,7 +314,7 @@ async def start9():
 
 
 starts = [start1, start2, start3,start4,start5,start6,start7,start9]
-indice_atual = 0
+indice_atual = 5
 
 
 async def mudar():
