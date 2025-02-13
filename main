@@ -167,7 +167,7 @@ async def start3():
     await motor.run_for_degrees(port.C,-600,1100,acceleration=10000) #Cremalheira levanta berçario
     await pausa(200)
     await motor.run_for_degrees(port.E,-800,1000) #Coleta mergulhador e realiza ramos de coral
-    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1100,0,velocity=-1100, acceleration=10000)#volta a base
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1,1000,0,velocity=-1100, acceleration=10000)#volta a base
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1100,0,1050)#curva de ajuste para entrar totalmente na base
 
 async def start4():
